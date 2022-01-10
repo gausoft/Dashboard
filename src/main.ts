@@ -33,7 +33,7 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 
-  console.log("App launched at " + await getCompleteUrlPath());
+//  console.log("App launched at " + await getCompleteUrlPath());
 
 }
 bootstrap();
