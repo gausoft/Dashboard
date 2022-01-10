@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique
+  password   String
+  created_at DateTime  @default(now())
+  services   Service[]
+  widgets Widget[]
+
+  update_at DateTime @updatedAt
+}
+
+model Service {
+  id      Int      @id @default(autoincrement())
+  name    String?
+  is_registred Boolean @default(false)
+  userId  Int
+  user    User?     @relation(fields: [userId], references: [id])
+  
+  widgets Widget[]
+  update_at DateTime @updatedAt
+}
+
+
+model Widget {
+  id      Int      @id @default(autoincrement())
+  name String?
+  params String
+  description String?
+  
+  userId Int?
+  user User? @relation(fields: [userId], references: [id])
+
+  
+  service    Service?     @relation(fields: [serviceId], references: [id])
+  serviceId  Int?
+
+  token Token?
+  update_at DateTime @updatedAt
+}
+
+model Token {
+  id      Int      @id @default(autoincrement())
+  accessToken String
+  refreshToken String
+  expires Int
+
+  widget Widget?  @relation(fields: [widgetId], references: [id])
+  widgetId Int?
+
+  update_at DateTime @updatedAt
+}
+
