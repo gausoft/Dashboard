@@ -56,8 +56,11 @@ export class IntranetController {
         
     })
     createMeWidget (@Request() req : Request, @Body() body: CreateWidgetDto) {
-        if (body.params.startsWith("https://intra.epitech.eu/"))
+        if (body.params.startsWith("https://intra.epitech.eu/", 0))
             body.params = body.params.replace("https://intra.epitech.eu/", '');        
+        
+        if (!body.params.startsWith('auth'))
+            throw new BadRequestException('This autologin is not sexy');
         const username = decodeHeader(req.headers);
         return this.intranetService.createMeWidget(username, body.params);    
     }
@@ -83,17 +86,24 @@ export class IntranetController {
     })
     createPlansWidget(@Request() req : Request, @Body() body: CreateWidgetDto) {
         const username = decodeHeader(req.headers);
+        if (body.params.startsWith("https://intra.epitech.eu/", 0))
+            body.params = body.params.replace("https://intra.epitech.eu/", '');        
+        
+        if (!body.params.startsWith('auth'))
+            throw new BadRequestException('This autologin is not sexy');
         return this.intranetService.createPlanWidget(username, body.params);    
     }
 
     @Get('widgets/plans')
     findPlans(@Request() req : Request) {
         const username = decodeHeader(req.headers);
+        
         return this.intranetService.getPlansWidgets(username);    
     }
 
     @Get('widgets/plans/:id')
     findPlansById(@Request() req : Request, @Param('id') id: string) {
+        
         const username = decodeHeader(req.headers);
         return this.intranetService.getPlansWidgetById(username, +id);    
     }

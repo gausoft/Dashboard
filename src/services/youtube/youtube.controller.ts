@@ -83,7 +83,9 @@ export class YoutubeController {
     })
     createFavoriteWidget(@Request() req : Request, @Body() body: CreateWidgetDto) {
         const username = decodeHeader(req.headers);
-        if (!body.params.startsWith('https://www.youtube.com/channel/') || !body.params.startsWith('https://www.youtube.com/c/'))
+        console.log(body);
+        
+        if (!body.params.startsWith('https://www.youtube.com/channel') || !body.params.startsWith('https://www.youtube.com/c'))
             throw new BadRequestException('params is not an allowed link')
         
         return this.youtubeService.createFavoriteWidget(username, body.params);    
