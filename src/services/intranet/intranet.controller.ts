@@ -58,8 +58,6 @@ export class IntranetController {
     createMeWidget (@Request() req : Request, @Body() body: CreateWidgetDto) {
         if (body.params.startsWith("https://intra.epitech.eu/"))
             body.params = body.params.replace("https://intra.epitech.eu/", '');        
-        if (!body.params.startsWith('auth'))
-            throw new BadRequestException('This autologin is not sexy');
         const username = decodeHeader(req.headers);
         return this.intranetService.createMeWidget(username, body.params);    
     }
